@@ -7,10 +7,11 @@
 }
 
 :root {
-  --topPanelHeight: 70px;
+  --topPanelHeight: 82px;
 }
 
 .container {
   display: flex;
   height: calc(100vh - var(--topPanelHeight));
+  border-top: 2px solid silver;
 }

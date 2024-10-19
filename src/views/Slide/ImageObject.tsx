@@ -15,8 +15,8 @@ function ImageObject({imageObject, scale = 1}: SlideImageProps)
         width: `${imageObject.size.width * scale}px`,
         height: `${imageObject.size.height * scale}px`,
     }
-    return ( // что с этим делать???
-        <img style={imageObjectStyles} src={`data:image/jpeg;base64, ${imageObject.src}`}/>
+    return ( 
+        <img style={imageObjectStyles} src={`${imageObject.src}`}/>
     )
 }
 

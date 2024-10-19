@@ -3,6 +3,7 @@
     height: var(--topPanelHeight);
     background-color: #dadce0;
     padding: 10px;
+    border-bottom: 2px solid Silver;
 }
 
 .title {
