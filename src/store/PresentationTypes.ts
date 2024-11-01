@@ -1,17 +1,19 @@
 export type Presentation = {
     title: string,
-    slides: Array<Slide>,
+    slides: SlidesCollection,
 }
+
+export type SlidesCollection = Array<Slide>;
 
 export type Slide = {
     id: string,
     elements: Array<SlideElement>, 
-    background: string, //Background,
+    background: Background,
 }
 
 export type SlideElement = SlideText | SlideImage;
 
-//export type Background = Solid | BackImage;
+export type Background = SolidBackground | ImageBackground;
 
 export type SlideObj = { // базовый тип
     id: string,
@@ -25,20 +27,25 @@ export type SlideObj = { // базовый тип
     }
 }
 
-export type Solid = {
-    color: string,
-    type: "Solid",
-}
+//export type Solid = {
+//    color: string,
+//    type: "Solid",
+//}
 
 export type SlideImage = SlideObj & {
     src: string,  
     type: "SlideImage",
 }
 
-/* export type BackImage = {
-    src: string,
-    type: "BackImage",
-} */
+export type ImageBackground = {
+    type: 'image',
+    src: string;
+}
+
+export type SolidBackground = {
+    type: 'solid',
+    color: string;
+}
 
 export type SlideText = SlideObj & {
     value: string, 

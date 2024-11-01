@@ -5,6 +5,7 @@ import './index.css'
 import { addEditorChangeHandler, getEditor } from "./store/editor";
 
 const root = createRoot(document.getElementById('root')!)
+
 function render()
 {
     root.render(

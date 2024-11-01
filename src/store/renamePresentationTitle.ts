@@ -1,9 +1,17 @@
-import { Presentation } from "./PresentationTypes";
+import { EditorType } from "./editorType.ts";
 
-export function renamePresentationTitle(newTitle: string, presentation: Presentation): Presentation
+function renamePresentationTitle(editor: EditorType, newTitle: string): EditorType
 {
     return {
-        ...presentation,
-        title: newTitle,
+        ...editor,
+        presentation:
+        {
+            ...editor.presentation,
+            title: newTitle,
+        }
     };
+}
+
+export {
+    renamePresentationTitle,
 }

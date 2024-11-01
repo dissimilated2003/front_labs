@@ -1,14 +1,17 @@
 import styles from './Button.module.css'
 
 type ButtonProps = {
+    image: string,
     text: string,
     onClick: () => void,
     className: string,
 }
 
-function Button({text, onClick, className}: ButtonProps) {
+function Button({image, text, onClick, className}: ButtonProps) {
     return (
-        <button className={`${styles.button} ${className}`} onClick={onClick}>{text}</button>
+        <button className={`${styles.button} ${className}`} onClick={onClick} title={text}>
+            <img src={image}></img>
+        </button>
     )
 }
 

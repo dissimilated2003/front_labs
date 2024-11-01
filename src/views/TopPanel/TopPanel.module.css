@@ -1,7 +1,7 @@
 .topPanel {
     width: 100vw;
     height: var(--topPanelHeight);
-    background-color: #dadce0;
+    background-color: #242424;
     padding: 10px;
     border-bottom: 2px solid Silver;
 }
@@ -10,10 +10,18 @@
     background-color: transparent;
     border: none;
     font-size: 16px;
-    width: 250px;
-    margin: 0 0 10px 5px;
+    width: 200px;
+    margin-top: 10px;
+    margin-left: 10px;
+    font-family: 'Arial';
 }
 
 .button {
     margin: 0 3px;
+}
+
+.logo {
+    width: 15px;
+    height: 15px;
+    margin-left: 15px;
 }

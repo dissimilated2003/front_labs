@@ -1,9 +1,30 @@
-import { Presentation } from "./PresentationTypes";
+import { EditorType } from "./editorType";
 
-export function removeSlide(presentation: Presentation, slideId: string): Presentation 
+export function removeSlide(editor: EditorType): EditorType
 {
+    if (!editor.selection) {
+        return editor;
+    }
+
+    const removeSlideId = editor.selection.selectedSlideId;
+    const removeSlideIndex = editor.presentation.slides.findIndex(SlideO => SlideO.id === removeSlideId);
+    const newSlides = editor.presentation.slides.filter(SlideO => SlideO.id !== removeSlideId);
+
+    let newSelectedSlideId = null;
+    if (newSlides.length > 0) {
+        const index = Math.min(removeSlideIndex, newSlides.length - 1);
+        newSelectedSlideId = newSlides[index].id;
+    }
+
     return {
-        ...presentation,
-        slides: presentation.slides.filter(slide => slide.id !== slideId),
+        ...editor,
+        presentation: {
+            ...editor.presentation,
+            slides: newSlides,
+        },
+        selection: {
+            selectedSlideId: newSelectedSlideId,
+            selectedObjectId: editor.selection.selectedObjectId
+        },
     };
 }

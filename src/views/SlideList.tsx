@@ -1,4 +1,4 @@
-import { Slide } from "../store/PresentationTypes";
+import { SlidesCollection } from "../store/PresentationTypes";
 import { SlideO } from "./Slide/Slide";
 import styles from './SlideList.module.css'
 import { SelectionType } from "../store/editorType";
@@ -8,16 +8,17 @@ import { setSelection } from "../store/setSelection";
 const Slide_Preview_Scale = 0.2
 
 type SlideListProps = {
-    slides: Array<Slide>,
-    selection: SelectionType | null,
+    slides: SlidesCollection,
+    selection: SelectionType,
 }
 
-function SlidesList({slides, selection}: SlideListProps)
+export function SlidesList({slides, selection}: SlideListProps)
 {
     function onSlideClick(slideId: string)
     {
         dispatch(setSelection, {selectedSlideId: slideId})
     }
+
     return (
         <div className={styles.slideList}>
             {slides.map(slide => 
@@ -27,13 +28,10 @@ function SlidesList({slides, selection}: SlideListProps)
                         scale={Slide_Preview_Scale}
                         isSelected={selection ? slide.id == selection.selectedSlideId : false}
                         className={styles.item}
+                        selectedObjectId={selection?.selectedObjectId}
                     ></SlideO>
                 </div>
             )}
         </div>
     )
-}
-
-export {
-    SlidesList,
 }

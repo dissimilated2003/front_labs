@@ -1,7 +1,7 @@
 import { editor } from "./data.ts"
 
 let _editor = editor
-let _handler: Function | null = null//(() => void) | null
+let _handler = null //: Function | null = null 
 
 function getEditor() 
 {

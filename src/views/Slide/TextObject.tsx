@@ -4,9 +4,10 @@ import { CSSProperties } from "react";
 type TextObjectProps = {
     textObject: SlideText,
     scale?: number,
+    isSelected: boolean,
 }
 
-function TextObject({textObject, scale = 1}: TextObjectProps)
+function TextObject({textObject, scale = 1, isSelected}: TextObjectProps)
 {
     const textObjectStyles: CSSProperties = {
         position: 'absolute',
@@ -16,6 +17,12 @@ function TextObject({textObject, scale = 1}: TextObjectProps)
         height: `${textObject.size.height * scale}px`,
         fontSize: `${textObject.fontSize * scale}px`
     }
+
+    if (isSelected) {
+        textObjectStyles.border = '3px solid #0b57d0',
+        textObjectStyles.borderColor = '#0b57d0'
+    }
+
     return (
         <p style={textObjectStyles}>{textObject.value}</p>
     )
