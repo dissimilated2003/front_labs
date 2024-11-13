@@ -37,7 +37,10 @@ export function ToolBar()
     }
 
     function onChangeSlideColor() {
-        dispatch(changeSlideColor);
+        dispatch(changeSlideColor, {
+            type: 'solid',
+            color: '#FF0000',
+        });
     }
 
     function onChangeBgrImage() {
@@ -73,13 +76,25 @@ export function ToolBar()
 
             <div className={styles.changeSlideColor}>
                 <button className={styles.button} onClick={onChangeSlideColor}>
-                    Изменить цвет фона
+                    Цвет фона
+                    <input
+                        className={styles.colorpicker} 
+                        type={'color'} 
+                        value={'#FF0000'}
+                        onInput={() => {}}
+                        onChange={value => {
+                            dispatch(changeSlideColor, {
+                                type: 'solid',
+                                color: value.target.value
+                            })
+                        }}
+                    ></input>
                 </button>
             </div>
 
             <div className={styles.changeSlideBgrImage}>
                 <button className={styles.button} onClick={onChangeBgrImage}>
-                    Изменить фоновое изображение
+                    Фоновое изображение
                 </button>
             </div>
         </div>

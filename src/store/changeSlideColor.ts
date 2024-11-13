@@ -1,13 +1,8 @@
 import { EditorType } from "./editorType";
 import { SolidBackground } from "./PresentationTypes";
 
-export function changeSlideColor(editor: EditorType): EditorType
+export function changeSlideColor(editor: EditorType, payload?: Object): EditorType
 {
-    const newBackground: SolidBackground = {
-        type: 'solid',
-        color: '#A20000',
-    };
-
     if (!editor.selection || !editor.selection.selectedSlideId)
     {
         return editor;
@@ -17,7 +12,7 @@ export function changeSlideColor(editor: EditorType): EditorType
         if (SlideO.id === editor.selection.selectedSlideId) {
             return {
                 ...SlideO,
-                background: newBackground,
+                background: payload as SolidBackground,
             };
         }
         return SlideO;

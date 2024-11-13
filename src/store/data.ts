@@ -40,7 +40,7 @@ const slide2: Slide = {
     id: 'slide-2',
     elements: [
         {
-            id: 'image-1',
+            id: 'image-2',
             type: 'SlideImage',
             pos: {ox: 420, oy: 50},
             size: {width: 400, height: 200},

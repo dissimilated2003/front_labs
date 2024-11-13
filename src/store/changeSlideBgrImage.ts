@@ -5,7 +5,7 @@ export function changeSlideBgrImage(editor: EditorType): EditorType
 {
     const newBackground: ImageBackground = {
         type: 'image',
-        src: 'Serenity.png'
+        src: './src/store/Serenity.png'
     };
 
     if (!editor.selection || !editor.selection.selectedSlideId)
