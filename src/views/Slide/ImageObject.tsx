@@ -15,6 +15,7 @@ function ImageObject({imageObject, scale = 1, isSelected}: SlideImageProps)
         left: `${imageObject.pos.ox * scale}px`,
         width: `${imageObject.size.width * scale}px`,
         height: `${imageObject.size.height * scale}px`,
+        zIndex: 3,
     }
 
     if (isSelected) {

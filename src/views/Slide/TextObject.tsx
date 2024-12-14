@@ -1,5 +1,6 @@
 import { SlideText } from "../../store/PresentationTypes";
-import { CSSProperties } from "react";
+import { CSSProperties, useRef } from "react";
+import { useDragAndDrop } from "./useDragAndDrop";
 
 type TextObjectProps = {
     textObject: SlideText,
@@ -9,13 +10,16 @@ type TextObjectProps = {
 
 function TextObject({textObject, scale = 1, isSelected}: TextObjectProps)
 {
+    
     const textObjectStyles: CSSProperties = {
         position: 'absolute',
         top: `${textObject.pos.oy * scale}px`,
         left: `${textObject.pos.ox * scale}px`,
         width: `${textObject.size.width * scale}px`,
         height: `${textObject.size.height * scale}px`,
-        fontSize: `${textObject.fontSize * scale}px`
+        fontSize: `${textObject.fontSize * scale}px`,
+        zIndex: 3,
+        margin: 0,
     }
 
     if (isSelected) {

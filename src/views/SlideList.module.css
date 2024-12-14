@@ -1,5 +1,6 @@
 .slideList {
     border-right: 2px solid silver;
+    overflow-y: auto;
 }
 
 .item {

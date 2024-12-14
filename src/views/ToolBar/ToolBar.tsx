@@ -32,7 +32,7 @@ export function ToolBar()
         dispatch(removeElementFromSlide);
     }
 
-    function onAddImage() {
+    function onAddImage() { //TODO: чтобы можно было загружать с компа
         dispatch(addImageToSlide);
     }
 
@@ -43,7 +43,7 @@ export function ToolBar()
         });
     }
 
-    function onChangeBgrImage() {
+    function onChangeBgrImage() { //TODO: тоже чтобы можно быть загружать с компа
         dispatch(changeSlideBgrImage)
     }
 
@@ -51,32 +51,32 @@ export function ToolBar()
         <div className={styles.toolbar}>
             <button className={styles.button} onClick={onAddSlide}>
                 <img className={styles.imageButton} src={addSlideIcon} alt="Добавить слайд" />
-                Добавить слайд
+                Слайд
             </button>
 
             <button className={styles.button} onClick={onRemoveSlide}>
                 <img className={styles.imageButton} src={removeSlideIcon} alt="Удалить слайд" />
-                Удалить слайд
+                Слайд
             </button>
 
             <button className={styles.button} onClick={onAddText}>
                 <img className={styles.imageButton} src={addTextIcon} alt="Добавить текст" />
-                Добавить текст
+                Добавить
             </button>
 
             <button className={styles.button} onClick={onAddImage}>
                 <img className={styles.imageButton} src={addImageIcon} alt="Добавить изображение" />
-                Добавить изображение
+                Добавить
             </button>
 
             <button className={styles.button} onClick={onRemoveElement}>
                 <img className={styles.imageButton} src={removeElementIcon} alt="Удалить объект" />
-                Удалить объект
+                Объект
             </button>
 
             <div className={styles.changeSlideColor}>
                 <button className={styles.button} onClick={onChangeSlideColor}>
-                    Цвет фона
+                    Фон
                     <input
                         className={styles.colorpicker} 
                         type={'color'} 
@@ -94,7 +94,11 @@ export function ToolBar()
 
             <div className={styles.changeSlideBgrImage}>
                 <button className={styles.button} onClick={onChangeBgrImage}>
-                    Фоновое изображение
+                    <input type="file" 
+                    id="imageUploader" 
+                    accept='image/*' 
+                    onChange={onChangeBgrImage} className={styles.imageUploader}/>
+                    БГР
                 </button>
             </div>
         </div>
