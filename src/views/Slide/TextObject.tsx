@@ -13,7 +13,11 @@ type TextObjectProps = {
 function TextObject({textObject, scale = 1, isSelected}: TextObjectProps)
 {
     const [isEditing, setIsEditing] = useState(false);
-    const [textValue, setTextValue] = useState(textObject.value);
+    const [textValue, setTextValue] = useState(() => {
+        // Загружаем текст из localStorage, если он доступен
+        const storedText = localStorage.getItem(`text_${textObject.id}`);
+        return storedText ? storedText : textObject.value; // Возвращаем сохранённый текст или оригинальный
+    });
 
     const textObjectStyles: CSSProperties = {
         position: 'absolute',
@@ -27,22 +31,13 @@ function TextObject({textObject, scale = 1, isSelected}: TextObjectProps)
         border: isSelected ? '3px solid #0b57d0' : 'none',
     }
 
-    /* if (isSelected) {
-        textObjectStyles.border = '3px solid #0b57d0',
-        textObjectStyles.borderColor = '#0b57d0'
-    } */
-
-    /* return (
-        <p style={textObjectStyles}>{textObject.value}</p>
-    ) */
-
     const handleDoubleClick = () => { setIsEditing(true); };
     
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => { setTextValue(e.target.value); };
     
     const handleBlur = () => { 
         setIsEditing(false); 
-        // наверное тут надо редакс, я хз как тут сделать
+        localStorage.setItem(`text_${textObject.id}`, textValue);
     };
 
     return (

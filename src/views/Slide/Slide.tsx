@@ -32,6 +32,16 @@ export function SlideO({slide, scale = 1, isSelected, className, selectedObjectI
         })
     }
 
+    const handleSlideClick = () => {
+        // Сбрасываем выделение, если кликнули на пустую область
+        if (selectedObjectId) {
+            dispatch(setSelection, {
+                selectedSlideId: slide?.id,
+                selectedObjectId: null, // Снимаем выделение
+            });
+        }
+    };
+
     if (slide == null) {
         return (<></>)
     }
@@ -65,13 +75,13 @@ export function SlideO({slide, scale = 1, isSelected, className, selectedObjectI
             handleResizeMU();
         }}
         onMouseLeave={handleResizeMU}
-        onClick={() => handleResizeMU()}>
+        onClick={handleSlideClick}>
             {slide.elements.map(SlideElement => {
                 const isSelectionElem = SlideElement.id === selectedObjectId;
 
                 return (
                     <div key={SlideElement.id}
-                    onClick={() => onObjectClick(SlideElement.id)}
+                    onClick={(e) => { e.stopPropagation(); onObjectClick(SlideElement.id); }}
                     onMouseDown={(event) => handleElementMD(event, SlideElement.id)}
                     style={{position: 'relative'}}>
                         {SlideElement.type === "SlideText" && (
