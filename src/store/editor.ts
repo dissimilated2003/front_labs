@@ -1,8 +1,9 @@
 import { editor } from "./data.ts"
 import { loadFromLocalStorage, saveToLocalStorage } from "./localStorage/localStorageUtils.ts";
+import { validateEditor } from "./localStorage/validation.ts";
 
-let _editor = editor || loadFromLocalStorage()
-let _handler = null //: Function | null = null 
+let _editor = loadFromLocalStorage() || editor 
+let _handler: Function | null = null 
 
 function getEditor() 
 {
@@ -28,6 +29,13 @@ function dispatch(modifyFn: Function, payload?: Object): void
 function addEditorChangeHandler(handler: Function): void
 {
     _handler = handler
+}
+
+const initState = loadFromLocalStorage();
+if (initState && validateEditor(initState.presentation)) {
+    setEditor(initState)
+} else {
+    console.error('Invalid init state from LS')
 }
 
 export {

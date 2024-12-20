@@ -44,8 +44,9 @@ export function SlidesList({slides, selection}: SlideListProps)
                         isSelected={selection ? slide.id === selection.selectedSlideId : false}
                         className={styles.item}
                         selectedObjectId={selection?.selectedObjectId}
-                        showResizeHandles={false}
-                    ></SlideO>
+                        showResizeHandles={false}>
+                        
+                    </SlideO>
                 </div>
             )}
         </div>

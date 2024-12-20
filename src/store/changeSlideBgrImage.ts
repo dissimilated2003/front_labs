@@ -1,11 +1,11 @@
 import { EditorType } from "./editorType";
 import { ImageBackground } from "./PresentationTypes";
 
-export function changeSlideBgrImage(editor: EditorType): EditorType
+export function changeSlideBgrImage(editor: EditorType, imageSrc: string): EditorType
 {
     const newBackground: ImageBackground = {
         type: 'image',
-        src: './src/store/Serenity.png'
+        src: imageSrc, 
     };
 
     if (!editor.selection || !editor.selection.selectedSlideId)

@@ -2,9 +2,9 @@ import { EditorType } from "./editorType";
 import { SlideImage } from "./PresentationTypes";
 import { generateRandomId } from "./generateRandomId";
 
-export function addImageToSlide(editor: EditorType): EditorType
+export function addImageToSlide(editor: EditorType, imageSrc: string): EditorType
 {
-    const image = './src/store/Serenity.png';
+    
     if (!editor.selection || !editor.selection.selectedSlideId) {
         return editor;
     }
@@ -14,7 +14,7 @@ export function addImageToSlide(editor: EditorType): EditorType
         pos: {ox: 400, oy: 300},
         size: {width: 200, height: 150},
         type: 'SlideImage',
-        src: image,
+        src: imageSrc,
     }
 
     const updatedSlides = editor.presentation.slides.map(SlideO => {
