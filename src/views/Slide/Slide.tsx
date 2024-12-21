@@ -33,11 +33,10 @@ export function SlideO({slide, scale = 1, isSelected, className, selectedObjectI
     }
 
     const handleSlideClick = () => {
-        // Сбрасываем выделение, если кликнули на пустую область
         if (selectedObjectId) {
             dispatch(setSelection, {
                 selectedSlideId: slide?.id,
-                selectedObjectId: null, // Снимаем выделение
+                selectedObjectId: null,
             });
         }
     };

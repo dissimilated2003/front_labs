@@ -38,7 +38,6 @@ export function ToolBar()
         dispatch(removeElementFromSlide);
     }
 
-    //const fileInputRef = useRef<HTMLInputElement | null>(null)
     function onAddImage(event: React.ChangeEvent<HTMLInputElement>) {
         const file = event.target.files?.[0];
         
@@ -53,10 +52,6 @@ export function ToolBar()
             reader.readAsDataURL(file);
         }
     }
-
-    /* function handleButtonClick() {
-        fileInputRef.current?.click();
-    } */
 
     function onChangeSlideColor() {
         dispatch(changeSlideColor, {

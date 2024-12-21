@@ -14,9 +14,8 @@ function TextObject({textObject, scale = 1, isSelected}: TextObjectProps)
 {
     const [isEditing, setIsEditing] = useState(false);
     const [textValue, setTextValue] = useState(() => {
-        // Загружаем текст из localStorage, если он доступен
         const storedText = localStorage.getItem(`text_${textObject.id}`);
-        return storedText ? storedText : textObject.value; // Возвращаем сохранённый текст или оригинальный
+        return storedText ? storedText : textObject.value; 
     });
 
     const textObjectStyles: CSSProperties = {
@@ -48,7 +47,7 @@ function TextObject({textObject, scale = 1, isSelected}: TextObjectProps)
                     onChange={handleChange}
                     onBlur={handleBlur}
                     autoFocus
-                    style={{...textObjectStyles, fontSize: `${textObject.fontSize * scale}px`,}} // Добавление стилей
+                    style={{...textObjectStyles, fontSize: `${textObject.fontSize * scale}px`,}}
                     />
             ) : (
                 <p onDoubleClick={handleDoubleClick} style={textObjectStyles}>
