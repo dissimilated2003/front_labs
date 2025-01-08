@@ -8,7 +8,7 @@ export function addSlide(editor: EditorType): EditorType {
         elements: [],
         background: {
             type: 'solid',
-            color: 'ffffff',
+            color: '#ffffff',
         }
     }
 

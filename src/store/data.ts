@@ -28,9 +28,9 @@ const slide1: Slide = {
         {
             id: 'image-1',
             type: 'SlideImage',
-            pos: {ox: 20, oy: 250},
-            size: {width: 200, height: 130},
-            src: './src/store/Kirpish.png'
+            pos: {ox: 60, oy: 220},
+            size: {width: 250, height: 130},
+            src: './src/store/vedro.jpg'
         },
     
     ],
@@ -40,14 +40,17 @@ const slide2: Slide = {
     id: 'slide-2',
     elements: [
         {
-            id: 'image-2',
-            type: 'SlideImage',
-            pos: {ox: 420, oy: 50},
-            size: {width: 400, height: 200},
-            src: './src/store/Serenity.png'
+            id: 'text-4',
+            type: 'SlideText',
+            pos: {ox: 440, oy: 40},
+            size: {width: 400, height: 30},
+            value: 'хочу 4 по фронтенду',
+            fontFamily: 'Arial',
+            fontSize: 20,
+            fontColor: '00CC99'
         },
     ],
-    background: {type: 'solid', color: '#007799'}, 
+    background: {type: 'image', src: './src/store/frontend.jpg'}, 
 }
 
 const presentation: Presentation = {

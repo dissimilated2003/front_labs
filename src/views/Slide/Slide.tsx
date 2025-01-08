@@ -44,7 +44,7 @@ export function SlideO({slide, scale = 1, className, showResizeHandles = true}: 
     }
     
     const slideStyles: CSSProperties = {
-        backgroundColor: slide.background?.type === 'solid' ? slide.background.color : 'ffffff',
+        backgroundColor: slide.background?.type === 'solid' ? slide.background.color : '#fff',
         backgroundImage: slide.background?.type === 'image' ? `url(${slide.background.src})` : 'none',
         backgroundSize: 'cover',
         position: 'relative',
@@ -66,13 +66,24 @@ export function SlideO({slide, scale = 1, className, showResizeHandles = true}: 
         handleResizeMU();
     }
 
+    const handleMouseLeave = () => {
+        if (isDragging) {
+            handleElementMU();
+        }
+        if (isResizing) {
+            handleResizeMU();
+        }
+    }
+
     return (
-        <div style={slideStyles} 
-        className={`${styles.slide} ${className}`}
-        onClick={handleClick}
-        onMouseMove={handleGlobalMM}
-        onMouseUp={handleGlobalMU}
-        onMouseLeave={handleResizeMU}>
+        <div 
+            style={slideStyles} 
+            className={`${styles.slide} ${className}`}
+            onClick={handleClick}
+            onMouseMove={handleGlobalMM}
+            onMouseUp={handleGlobalMU}
+            onMouseLeave={handleMouseLeave}
+        >
             {slide.elements.map(SlideElement => {
                 const isSelectionElem = SlideElement.id === selection?.selectedObjectId;
 
