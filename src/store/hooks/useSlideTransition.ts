@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { dispatch } from "../../store/editor";
-import { changeSlidePosition } from "../../store/moveSlideOnList";
-import { EditorType } from "../../store/editorType";
+import { useAppActions } from "./useAppActions";
+import { useAppSelector } from "./useAppSelector";
 
 export function useSlideTransition() {
     const [draggingSlide, setDraggingSlide] = useState<string | null>(null);
     const [dragOverSlide, setDragOverSlide] = useState<string | null>(null);
 
+    const { moveSlideOnList } = useAppActions();
+    const editor = useAppSelector((state) => state);
+    
     function handleDragStart(slideId: string) {
         setDraggingSlide(slideId);
     }
@@ -20,16 +22,17 @@ export function useSlideTransition() {
 
     function handleDragEnd() {
         if (draggingSlide && dragOverSlide && draggingSlide !== dragOverSlide) {
-            dispatch((currentEditor: EditorType) => 
-                changeSlidePosition(currentEditor, draggingSlide, dragOverSlide)
-            );
+            moveSlideOnList(editor, draggingSlide, dragOverSlide);
         }
         setDraggingSlide(null);
         setDragOverSlide(null);
     }
 
     return {
-        draggingSlide, dragOverSlide, 
-        handleDragStart, handleDragOver, handleDragEnd,
+        draggingSlide, 
+        dragOverSlide, 
+        handleDragStart, 
+        handleDragOver, 
+        handleDragEnd,
     };
 }

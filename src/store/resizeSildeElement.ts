@@ -2,9 +2,13 @@ import { EditorType } from "./editorType";
 import { SlideElement } from "./PresentationTypes";
 
 export function resizeSlideElement(
-    currentEditor: EditorType, slideId: string, elementId: string,
-    newX: number, newY: number,
-    newWidth: number, newHeight: number
+    currentEditor: EditorType, 
+    slideId: string, 
+    elementId: string,
+    newWidth: number, 
+    newHeight: number,
+    newX: number, 
+    newY: number,
 ): EditorType {
     const slide = currentEditor.presentation.slides.find(s => s.id === slideId);
     if (!slide) return currentEditor;

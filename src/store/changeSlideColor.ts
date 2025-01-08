@@ -1,27 +1,25 @@
 import { EditorType } from "./editorType";
 import { SolidBackground } from "./PresentationTypes";
 
-export function changeSlideColor(editor: EditorType, payload?: Object): EditorType
-{
-    if (!editor.selection || !editor.selection.selectedSlideId)
-    {
-        return editor;
+export function changeSlideColor(bgrColor: EditorType, payload?: Object): EditorType {
+    if (!bgrColor.selection || !bgrColor.selection.selectedSlideId) {
+        return bgrColor;
     }
 
-    const updateSlides = editor.presentation.slides.map(SlideO => {
-        if (SlideO.id === editor.selection.selectedSlideId) {
+    const updateSlides = bgrColor.presentation.slides.map(slide => {
+        if (slide.id === bgrColor.selection?.selectedSlideId) {
             return {
-                ...SlideO,
+                ...slide,
                 background: payload as SolidBackground,
             };
         }
-        return SlideO;
+        return slide;
     });
 
     return {
-        ...editor,
+        ...bgrColor,
         presentation: {
-            ...editor.presentation,
+            ...bgrColor.presentation,
             slides: updateSlides,
         }
     }

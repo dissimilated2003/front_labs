@@ -1,17 +1,18 @@
+import { useAppSelector } from "../store/hooks/useAppSelector";
 import { Slide } from "../store/PresentationTypes";
 import { SlideO } from "./Slide/Slide";
 import styles from './WorkSpace.module.css'
 
-type WorkspaceProps = {
-    slide: Slide | null,
-    selectedObjectId: string | null
-}
-
-export function Workspace({slide, selectedObjectId}: WorkspaceProps)
-{
+export function Workspace() {
+    const editor = useAppSelector((editor => editor))
+    const slides = editor.presentation.slides
+    const selection = editor.selection
+    const selectedSlide: Slide = slides.find(slide => slide.id === selection?.selectedSlideId) || slides[0]
+    /* const selectedObject: string = editor.selection?.selectedObjectId || ""; */
+    
     return (
         <div className={styles.workspace}>
-            <SlideO slide={slide} isSelected={false} className={styles.workspace} selectedObjectId={selectedObjectId}></SlideO>
+            <SlideO slide={selectedSlide} className={styles.workspace}></SlideO>
         </div>
     )
 }

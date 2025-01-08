@@ -1,14 +1,38 @@
-import { Slide } from "./PresentationTypes";
+import { EditorType } from "./editorType";
+import { generateRandomId } from "./generateRandomId";
+import { SlideText } from "./PresentationTypes";
 
-export function changeTextContent(slide: Slide, elementId: string, newText: string): Slide
-{
+export function changeTextContent(text: EditorType): EditorType {
+    const context = "поставьте 4 ПЖ";
+    if (!text.selection || !text.selection.selectedSlideId) {
+        return text;
+    }
+
+    const newText: SlideText = {
+        id: generateRandomId(6),
+        pos: { ox: 300, oy: 300 },
+        size: { width: 200, height: 40 },
+        type: 'SlideText',
+        value: context,
+        fontSize: 20,
+        fontFamily: 'Arial',
+        fontColor: '#ffffff',
+    }
+
+    const updatedSlides = text.presentation.slides.map(slide => {
+        if (slide.id === text.selection?.selectedSlideId) {
+            return {
+                ...slide, elements: [...slide.elements, newText],
+            }
+        }
+        return slide;
+    })
+
     return {
-        ...slide,
-        elements: slide.elements.map(item =>
-            item.id === elementId && item.type === "SlideText" ? { 
-                ...item, 
-                value: newText 
-            } : item
-        ),
-    };
+        ...text,
+        presentation: {
+            ...text.presentation,
+            slides: updatedSlides,
+        }
+    }
 }

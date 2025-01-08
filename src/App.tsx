@@ -3,25 +3,24 @@ import { SlidesList } from './views/SlideList'
 import { TopPanel } from './views/TopPanel/TopPanel'
 import { ToolBar } from './views/ToolBar/ToolBar'
 import { Workspace } from './views/WorkSpace'
-import { EditorType } from './store/editorType'
+import { HistoryContext } from './store/hooks/historyContext'
+import { HistoryType } from './store/utilities/historyUndoRedo'
 
 type AppProps = {
-    editor: EditorType,
+    history: HistoryType,
 }
 
-function App({editor}: AppProps)
+function App({history}: AppProps)
 {
     return (
-        <div className='App'>
-            <TopPanel title={editor.presentation.title}></TopPanel>
+        <HistoryContext.Provider value={history}>
+            <TopPanel></TopPanel>
             <ToolBar></ToolBar>
             <div className={styles.container}>
-                <SlidesList slides={editor.presentation.slides} selection={editor.selection}></SlidesList>
-                <Workspace slide={editor.presentation.slides.find(SlideO => SlideO.id == editor.selection.selectedSlideId) || null} 
-                selectedObjectId={editor.selection.selectedObjectId}>
-                </Workspace>
+                <SlidesList></SlidesList>
+                <Workspace></Workspace>
             </div>
-        </div>
+        </HistoryContext.Provider>
     )
 }
 

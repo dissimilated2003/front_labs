@@ -7,5 +7,5 @@ export type SelectionType = {
 
 export type EditorType = {
     presentation: Presentation,
-    selection: SelectionType,
+    selection?: SelectionType,
 }

@@ -1,24 +1,25 @@
-import { editor } from "./data.ts"
 import { loadFromLocalStorage, saveToLocalStorage } from "./localStorage/localStorageUtils.ts";
 import { validateEditor } from "./localStorage/validation.ts";
+import { EditorType } from "./editorType.ts";
+import { defaultEditor } from "./reduxStore/defaultEditor.ts";
 
-let _editor = loadFromLocalStorage() || editor 
-let _handler: Function | null = null 
+type Handler = () => void
+type ModifyFn = (editor: EditorType, payload: any) => EditorType
 
-function getEditor() 
-{
+let _editor = loadFromLocalStorage() || defaultEditor 
+let _handler: Handler | null = null 
+
+function getEditor() {
     loadFromLocalStorage();
     return _editor
 }
 
-function setEditor(newEditor: any) 
-{
+function setEditor(newEditor: EditorType) {
     _editor = newEditor;
     saveToLocalStorage(_editor);
 }
 
-function dispatch(modifyFn: Function, payload?: Object): void 
-{
+function dispatch(modifyFn: ModifyFn, payload?: any): void {
     const newEditor = modifyFn(_editor, payload)
     setEditor(newEditor)
     if (_handler) {
@@ -26,8 +27,7 @@ function dispatch(modifyFn: Function, payload?: Object): void
     }
 }
 
-function addEditorChangeHandler(handler: Function): void
-{
+function addEditorChangeHandler(handler: Handler): void {
     _handler = handler
 }
 

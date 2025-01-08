@@ -8,14 +8,14 @@ export type SlidesCollection = Array<Slide>;
 export type Slide = {
     id: string,
     elements: Array<SlideElement>, 
-    background: Background,
+    background: Background | undefined,
 }
 
 export type SlideElement = SlideText | SlideImage;
 
 export type Background = SolidBackground | ImageBackground;
 
-export type SlideObj = { // базовый тип
+export type SlideObj = { 
     id: string,
     pos: {
         ox: number,
@@ -26,11 +26,6 @@ export type SlideObj = { // базовый тип
         height: number,
     }
 }
-
-//export type Solid = {
-//    color: string,
-//    type: "Solid",
-//}
 
 export type SlideImage = SlideObj & {
     src: string,  

@@ -1,19 +1,29 @@
 .topPanel {
-    width: 100vw;
-    height: var(--topPanelHeight);
-    background-color: #242424;
-    padding: 10px;
-    border-bottom: 2px solid Silver;
+    background-color: #000e55;
 }
 
 .title {
     background-color: transparent;
     border: none;
-    font-size: 16px;
-    width: 200px;
+    font-size: 20px;
+    color: silver;
+    width: 400px;
     margin-top: 10px;
     margin-left: 10px;
     font-family: 'Arial';
+    font-weight: 600;
+    padding-left: 5px;
+    border: 2px solid transparent;
+}
+
+.title:focus {
+    outline: none;
+    border: 2px solid #e2bb0a;
+}
+
+.title::selection {
+    background-color: #001d9e;
+    color: #e2bb0a;
 }
 
 .button {

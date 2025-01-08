@@ -1,5 +1,6 @@
 import {Presentation, Slide} from "./PresentationTypes.ts";
 import {EditorType} from "./editorType.ts";
+import './Kirpish.png'
 
 const slide1: Slide = {
     id: 'slide-1',
@@ -9,7 +10,7 @@ const slide1: Slide = {
             type: 'SlideText',
             pos: {ox: 20, oy: 170},
             size: {width: 400, height: 30},
-            value: 'это твой телефон после расчётов БЖД:',
+            value: 'это твой ноут от PRESENTATION MAKER:',
             fontFamily: 'Arial',
             fontSize: 20,
             fontColor: '00CC99'
@@ -35,7 +36,6 @@ const slide1: Slide = {
     ],
     background: {type: 'solid', color: '#11aa35'}, 
 }
-import './Kirpish.png'
 const slide2: Slide = {
     id: 'slide-2',
     elements: [
@@ -51,14 +51,14 @@ const slide2: Slide = {
 }
 
 const presentation: Presentation = {
-    title: 'Крутая презентация',
+    title: 'ыъльовалеьоыъ',
     slides: [
         slide1, 
         slide2,
     ]
 }
 
-const editor: EditorType = {
+const defEditor: EditorType = {
     presentation,
     selection: {
         selectedSlideId: presentation.slides[0].id,
@@ -67,5 +67,5 @@ const editor: EditorType = {
 }
 
 export {
-    editor,
+    defEditor,
 }

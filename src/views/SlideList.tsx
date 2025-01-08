@@ -1,52 +1,60 @@
-import { SlidesCollection } from "../store/PresentationTypes";
 import { SlideO } from "./Slide/Slide";
 import styles from './SlideList.module.css'
-import { SelectionType } from "../store/editorType";
-import { dispatch } from "../store/editor";
-import { setSelection } from "../store/setSelection";
-import { useSlideTransition } from "./Slide/useSlideTransition";
+import { useAppActions } from "../store/hooks/useAppActions";
+import { useSlideTransition } from "../store/hooks/useSlideTransition";
+import { useAppSelector } from "../store/hooks/useAppSelector";
+import '../views/Slide/Slide.module.css'
 
 const Slide_Preview_Scale = 0.2
 
-type SlideListProps = {
-    slides: SlidesCollection,
-    selection: SelectionType,
-}
+export function SlidesList() {
+    function getSlideWrapClassname(slideId: string, selectedSlideId: string | undefined | null): string {
+        let className = styles.slideWrapper;
+        if (slideId === selectedSlideId) {
+            className = `${className} ${styles.selectedSlide}`
+        }
+        return className
+    }
 
-export function SlidesList({slides, selection}: SlideListProps)
-{
+    const editor = useAppSelector((state) => state)
+    const slides = editor.presentation.slides
+    const selection = editor.selection
+    const { setSelection } = useAppActions();
+
+    const onSlideClick = (slideId: string) => {
+        setSelection({selectedSlideId: slideId, selectedObjectId: null})
+    }
+
     const {
         draggingSlide,
         dragOverSlide,
         handleDragStart,
         handleDragOver,
-        handleDragEnd
+        handleDragEnd,
     } = useSlideTransition();
-
-    function onSlideClick(slideId: string)
-    {
-        dispatch(setSelection, {selectedSlideId: slideId})
-    }
 
     return (
         <div className={styles.slideList}>
-            {slides.map(slide => 
-                <div key={slide.id}
-                draggable
-                onDragStart={() => handleDragStart(slide.id)}
-                onDragOver={(e) => handleDragOver(e, slide.id)}
-                onDragEnd={handleDragEnd} 
-                onClick={() => onSlideClick(slide.id)}
-                className={draggingSlide === slide.id ? 'dragging' : (dragOverSlide === slide.id ? 'dragover' : '')}>
-                    <SlideO
-                        slide={slide}
-                        scale={Slide_Preview_Scale}
-                        isSelected={selection ? slide.id === selection.selectedSlideId : false}
-                        className={styles.item}
-                        selectedObjectId={selection?.selectedObjectId}
-                        showResizeHandles={false}>
-                        
-                    </SlideO>
+            {slides.map((slide, index) => 
+                <div 
+                    key={slide.id}
+                    draggable
+                    onDragStart={() => handleDragStart(slide.id)}
+                    onDragOver={(e) => handleDragOver(e, slide.id)}
+                    onDragEnd={handleDragEnd} 
+                    onClick={() => onSlideClick(slide.id)}
+                    className={`${styles.slideWrapper} ${draggingSlide === slide.id ? styles.dragging : ''} ${dragOverSlide === slide.id ? styles.dragOver : ''} ${getSlideWrapClassname(slide.id, selection?.selectedSlideId)}`}
+                >
+                    <div className={styles.slideNumber}>{index + 1}</div>
+
+                    <div className={styles.slideContent}>
+                        <SlideO
+                            slide={slide}
+                            scale={Slide_Preview_Scale}
+                            className={styles.item}
+                            showResizeHandles={false}
+                        />
+                    </div>
                 </div>
             )}
         </div>

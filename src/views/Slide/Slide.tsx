@@ -2,11 +2,12 @@ import { Slide } from "../../store/PresentationTypes";
 import { TextObject } from "./TextObject";
 import { ImageObject } from "./ImageObject";
 import styles from './Slide.module.css'
-import { CSSProperties } from "react";
-import { dispatch } from "../../store/editor";
-import { setSelection } from "../../store/setSelection";
-import { useDragAndDrop } from "./useDragAndDrop";
-import { useResizeElement } from "./useResizeElement";
+import { CSSProperties, MouseEvent } from "react";
+import { useDragAndDrop } from "../../store/hooks/useDragAndDrop";
+import { useResizeElement } from "../../store/hooks/useResizeElement";
+import { useAppSelector } from "../../store/hooks/useAppSelector";
+import { SelectionType } from "../../store/editorType";
+import { useAppActions } from "../../store/hooks/useAppActions";
 
 const Slide_Width = 935;
 const Slide_Height = 525;
@@ -14,39 +15,36 @@ const Slide_Height = 525;
 type SlideProps = {
     slide: Slide | null,
     scale?: number,
-    isSelected: boolean,
+    selection?: SelectionType,
     className: string,
-    selectedObjectId: string | null,
     showResizeHandles?: boolean;
 }
 
-export function SlideO({slide, scale = 1, isSelected, className, selectedObjectId, showResizeHandles = true}: SlideProps)
+export function SlideO({slide, scale = 1, className, showResizeHandles = true}: SlideProps)
 {
-    const { isDragging, handleElementMD, handleElementMM, handleElementMU} = useDragAndDrop({ slideId: slide?.id ?? ''});
-    const { isResizing, handleResizeMD, handleResizeMM, handleResizeMU} = useResizeElement({ slideId: slide?.id ?? ''});
+    const selection = useAppSelector((state) => state.selection)
+    const { setSelection } = useAppActions();
 
-    function onObjectClick(objectId: string): void {
-        dispatch(setSelection, {
-            selectedSlideId: slide?.id,
-            selectedObjectId: objectId,
-        })
+    const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        const target = event.target as HTMLElement;
+        const elementId = target.getAttribute('data-element-id');
+        const slideId = slide?.id ?? "";
+        if (elementId) {
+            setSelection({ selectedSlideId: slideId, selectedObjectId: elementId });
+        } else {
+            setSelection({ selectedSlideId: slideId, selectedObjectId: null });
+        }
     }
 
-    const handleSlideClick = () => {
-        if (selectedObjectId) {
-            dispatch(setSelection, {
-                selectedSlideId: slide?.id,
-                selectedObjectId: null,
-            });
-        }
-    };
+    const { isDragging, handleElementMD, handleElementMM, handleElementMU} = useDragAndDrop({ slideId: slide?.id ?? ''});
+    const { isResizing, handleResizeMD, handleResizeMM, handleResizeMU} = useResizeElement({ slideId: slide?.id ?? ''});
 
     if (slide == null) {
         return (<></>)
     }
     
     const slideStyles: CSSProperties = {
-        backgroundColor: slide.background?.type === 'solid' ? slide.background.color : 'transparent',
+        backgroundColor: slide.background?.type === 'solid' ? slide.background.color : 'ffffff',
         backgroundImage: slide.background?.type === 'image' ? `url(${slide.background.src})` : 'none',
         backgroundSize: 'cover',
         position: 'relative',
@@ -55,43 +53,54 @@ export function SlideO({slide, scale = 1, isSelected, className, selectedObjectI
         zIndex: 1,
     }
 
-    if (isSelected) {
-        slideStyles.border = '3px solid #0b57d0'
+    const handleGlobalMM = (event: MouseEvent<HTMLDivElement>) => {
+        if (isResizing) {
+            handleResizeMM(event);
+        } else if (isDragging) {
+            handleElementMM(event);
+        }
+    };
+
+    const handleGlobalMU = () => {
+        handleElementMU();
+        handleResizeMU();
     }
 
     return (
         <div style={slideStyles} 
         className={`${styles.slide} ${className}`}
-        onMouseMove={(event) => {
-            if (isResizing) {
-                handleResizeMM(event);
-            } else {
-                handleElementMM(event);
-            }
-        }}
-        onMouseUp={() => {
-            handleElementMU();
-            handleResizeMU();
-        }}
-        onMouseLeave={handleResizeMU}
-        onClick={handleSlideClick}>
+        onClick={handleClick}
+        onMouseMove={handleGlobalMM}
+        onMouseUp={handleGlobalMU}
+        onMouseLeave={handleResizeMU}>
             {slide.elements.map(SlideElement => {
-                const isSelectionElem = SlideElement.id === selectedObjectId;
+                const isSelectionElem = SlideElement.id === selection?.selectedObjectId;
 
                 return (
-                    <div key={SlideElement.id}
-                    onClick={(e) => { e.stopPropagation(); onObjectClick(SlideElement.id); }}
-                    onMouseDown={(event) => handleElementMD(event, SlideElement.id)}
-                    style={{position: 'relative'}}>
+                    <div 
+                        key={SlideElement.id}
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            setSelection({selectedSlideId: slide.id, selectedObjectId: SlideElement.id})
+                        }}
+                        onMouseDown={(event) => {
+                            event.stopPropagation();
+                            handleElementMD(event, SlideElement.id)
+                        }}
+                    >
                         {SlideElement.type === "SlideText" && (
-                            <TextObject textObject={SlideElement}
+                            <TextObject 
+                            textObject={SlideElement}
                             scale={scale}
-                            isSelected={isSelectionElem}/>
+                            isSelected={isSelectionElem}
+                            />
                         )}
                         {SlideElement.type === "SlideImage" && (
-                            <ImageObject imageObject={SlideElement}
+                            <ImageObject 
+                            imageObject={SlideElement}
                             scale={scale}
-                            isSelected={isSelectionElem}/>
+                            selection={isSelectionElem}
+                            />
                         )}
                         {isSelectionElem && showResizeHandles && (
                             <>
@@ -131,26 +140,6 @@ export function SlideO({slide, scale = 1, isSelected, className, selectedObjectI
                     </div>
                 );
             })}
-            {isDragging && (
-                <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: 'rgba(0, 0, 0, 0.1)'
-                }}/>
-            )}
-            {isResizing && (
-                <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: 'rgba(0, 0, 255, 0.1)'
-                }}/>
-            )}
         </div>
     );
 }

@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
-import { dispatch } from "../../store/editor";
-import { EditorType } from "../../store/editorType";
-import { resizeSlideElement } from "../../store/resizeSildeElement";
+import { useAppActions } from "./useAppActions";
+import { useAppSelector } from "./useAppSelector";
 
 type UseResizeElementProps = {
     slideId: string;
@@ -14,26 +13,25 @@ export function useResizeElement({slideId}: UseResizeElementProps) {
     const startMousePos = useRef({x: 0, y: 0});
     const initPos = useRef({x: 0, y: 0});
     const resizeDirect = useRef<string | null>(null);
+    const editor = useAppSelector(state => state);
+    const { resizeSlideElement } = useAppActions();
 
-    function handleResizeMD(event: React.MouseEvent, elementId: string, direction: string): void {
+    function handleResizeMD(event: React.MouseEvent<HTMLDivElement>, elementId: string, direction: string): void {
         event.preventDefault();
         setIsResizing(true);
         setResizedElementId(elementId);
         resizeDirect.current = direction;
-        startMousePos.current = {x: event.clientX, y: event.clientY};
+        startMousePos.current = { x: event.clientX, y: event.clientY };
         
-        dispatch((currentEditor: EditorType) => {
-            const slide = currentEditor.presentation.slides.find(s => s.id === slideId);
-            const element = slide?.elements.find(e => e.id === elementId);
-            if (element) {
-                startSize.current = {width: element.size.width, height: element.size.height};
-                initPos.current = {x: element.pos.ox, y: element.pos.oy};
-            }
-            return currentEditor;
-        });
+        const slide = editor.presentation.slides.find(s => s.id === slideId);
+        const element = slide?.elements.find(el => el.id === elementId);
+        if (element) {
+            startSize.current = { width: element.size.width, height: element.size.height };
+            initPos.current = { x: element.pos.ox, y: element.pos.oy }
+        }
     }
 
-    function handleResizeMM(event: React.MouseEvent): void {
+    function handleResizeMM(event: React.MouseEvent<HTMLDivElement>): void {
         if (!isResizing || !resizedElementId) {
             return;
         }
@@ -82,12 +80,16 @@ export function useResizeElement({slideId}: UseResizeElementProps) {
                 break;
         }
 
-        dispatch((currentEditor: EditorType) => {
-            return resizeSlideElement(
-                currentEditor, slideId, resizedElementId,
-                newX, newY, newWidth, newHeight
-            );
-        });
+        if (newX < 0) { 
+            newWidth += newX;
+            newX = 0;
+        }
+        if (newY < 0) {
+            newHeight += newY;
+            newY = 0;
+        }
+
+        resizeSlideElement(slideId, resizedElementId, newWidth, newHeight, newX, newY);
     }
 
     function handleResizeMU(): void {
@@ -98,6 +100,8 @@ export function useResizeElement({slideId}: UseResizeElementProps) {
 
     return {
         isResizing,
-        handleResizeMD, handleResizeMM, handleResizeMU
+        handleResizeMD, 
+        handleResizeMM, 
+        handleResizeMU
     };
 }

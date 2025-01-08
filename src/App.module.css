@@ -12,6 +12,7 @@
 
 .container {
   display: flex;
-  height: 84vh; /*calc(100vh - var(--topPanelHeight)); */
-  border-top: 2px solid silver;
+  height: 84vh; 
+  border-top: 2px solid #94aec9;
+  background-color: #051771;
 }
