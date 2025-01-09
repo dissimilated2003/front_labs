@@ -13,9 +13,18 @@ function removeSlide() {
     }
 }
 
-function changeTextContent() {
+function addTextElement() {
+    return {
+        type: ActionType.ADD_TEXT_ELEMENT,
+    }
+}
+
+function changeTextContent(id: string, newText: string) {
+    console.log('dddd');
     return {
         type: ActionType.CHANGE_TEXT_CONTENT,
+        id,
+        newText,
     }
 }
 
@@ -101,7 +110,8 @@ function loadPresentation(editor: EditorType) {
 export {
     addSlide, 
     removeSlide,
-    changeTextContent,
+    addTextElement as changeTextContent,
+    changeTextContent as changeTextContentReal,
     addImageToSlide,
     removeElementFromSlide,
     changeSlideColor,

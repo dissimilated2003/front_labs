@@ -4,7 +4,7 @@ import { SlideO } from "./Slide/Slide";
 import styles from './WorkSpace.module.css'
 
 export function Workspace() {
-    const editor = useAppSelector((editor => editor))
+    const editor = useAppSelector(editor => editor)
     const slides = editor.presentation.slides
     const selection = editor.selection
     const selectedSlide: Slide = slides.find(slide => slide.id === selection?.selectedSlideId) || slides[0]

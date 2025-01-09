@@ -6,7 +6,7 @@ import { removeSlide } from "../removeSlide";
 import { removeElementFromSlide } from "../removeElementFromSlide";
 import { changeSlideBgrImage } from "../changeSlideBgrImage";
 import { changeSlideColor } from "../changeSlideColor";
-import { changeTextContent } from "../changeTextContent";
+import { addTextElement } from "../addTextContent";
 import { addImageToSlide } from "../addImageToSlide";
 import { changeSlidePosition } from "../moveSlideOnList";
 import { moveSlideElement } from "../moveSlideElement";
@@ -14,6 +14,7 @@ import { resizeSlideElement } from "../resizeSildeElement";
 import { saveToLocalStorage } from "../localStorage/localStorageUtils";
 import { loadFromLocalStorage } from "../localStorage/localStorageUtils";
 import { defEditor } from "../data";
+import { changeTextContent } from "../changeTextContent";
 
 export function editorReducer(editor: EditorType = defEditor, action: EditorAction): EditorType {
     switch (action.type) {
@@ -25,8 +26,10 @@ export function editorReducer(editor: EditorType = defEditor, action: EditorActi
             return setSelection(editor, action)
         case ActionType.SET_EDITOR:
             return action.payload
+        case ActionType.ADD_TEXT_ELEMENT:
+            return addTextElement(editor);
         case ActionType.CHANGE_TEXT_CONTENT:
-            return changeTextContent(editor)
+            return changeTextContent(editor, action.id, action.newText);
         case ActionType.ADD_IMAGE:
             return addImageToSlide(editor, action.payload)
         case ActionType.REMOVE_ELEMENT:

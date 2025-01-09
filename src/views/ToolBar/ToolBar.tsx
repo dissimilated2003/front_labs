@@ -77,6 +77,10 @@ export function ToolBar() {
         setFontSize(Number(e.target.value));
     };
 
+    function addNewTextElement() {
+        
+    }
+
     return (
         <div className={styles.toolbar}>
             <button className={styles.button} onClick={addSlide}>
@@ -134,12 +138,12 @@ export function ToolBar() {
 
             <button className={styles.button} onClick={removeElementFromSlide}>
                 <img className={`${styles.imageButton} ${styles.sourceFilter}`} src={removeElementIcon} alt="Удалить объект" />
-                OBJECT
+                OBJ
             </button>
 
             <div className={styles.changeSlideColor}>
                 <button className={styles.button}>
-                    BGR COLOR
+                    BGR
                     <input
                         className={styles.colorpicker} 
                         type="color"
@@ -160,7 +164,7 @@ export function ToolBar() {
                     ref={bgrImageInputRef}
                 />
                 <img className={`${styles.imageButton} ${styles.sourceFilter}`} src={addImageIcon} alt="Фоновое изображение"/>
-                BACKGROUND
+                BGR
             </button>
 
             <button className={styles.button} onClick={onExportPresentation}>

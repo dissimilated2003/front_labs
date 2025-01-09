@@ -10,8 +10,7 @@ type AppProps = {
     history: HistoryType,
 }
 
-function App({history}: AppProps)
-{
+function App({history}: AppProps) {
     return (
         <HistoryContext.Provider value={history}>
             <TopPanel></TopPanel>

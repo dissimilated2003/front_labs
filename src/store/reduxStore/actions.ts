@@ -5,6 +5,7 @@ export enum ActionType {
     REMOVE_SLIDE = 'removeSlide',
     SET_SELECTION = 'setSelection',
     SET_EDITOR = 'setEditor',
+    ADD_TEXT_ELEMENT = 'addTextElement',
     CHANGE_TEXT_CONTENT = 'changeTextContent',
     ADD_IMAGE = 'addImage',
     REMOVE_ELEMENT = 'removeElement',
@@ -35,8 +36,14 @@ type SetEditorAction = {
     payload: EditorType,
 }
 
+type AddTextElementAction = {
+    type: ActionType.ADD_TEXT_ELEMENT,
+}
+
 type ChangeTextContentAction = {
     type: ActionType.CHANGE_TEXT_CONTENT,
+    id: string,
+    newText: string,
 }
 
 type AddImageAction = {
@@ -106,6 +113,6 @@ type ResizeElementAction = {
 }
 
 export type EditorAction = AddSlideAction | RemoveSlideAction | SetSelectionAction | SetEditorAction
-            | ChangeTextContentAction | AddImageAction | RemoveElementAction | ChangeSlideColorAction
+            | AddTextElementAction | AddImageAction | RemoveElementAction | ChangeSlideColorAction
             | ChangeSlideBgrImageAction | SavePresentationAction | LoadPresentationAction
-            | MoveSlideAction | MoveElementAction | ResizeElementAction
+            | MoveSlideAction | MoveElementAction | ResizeElementAction | ChangeTextContentAction

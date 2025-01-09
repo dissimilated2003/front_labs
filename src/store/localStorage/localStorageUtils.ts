@@ -17,18 +17,8 @@ export const saveToLocalStorage = (editor: EditorType) => {
 export const loadFromLocalStorage = (): EditorType | null => {
     try {
         const serializedState = localStorage.getItem('presentationEditor');
-
-        if (!serializedState) {
-            console.error('No data');
-            return null;
-        }
-
-        const editState = JSON.parse(serializedState) as EditorType;
-        if (!validateEditor(editState)) {
-            console.error('Invalid data loading');
-            throw new Error('Invallid save data');
-        }
-        return editState;
+        if (serializedState === null) return null;
+        return JSON.parse(serializedState);
     } catch (err) {
         console.error('Error loading from LS:', err);
         return null;

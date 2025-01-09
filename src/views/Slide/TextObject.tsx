@@ -1,6 +1,7 @@
 import { SlideText } from "../../store/PresentationTypes";
 import { CSSProperties } from "react";
 import { useState } from "react";
+import { useAppActions } from "../../store/hooks/useAppActions";
 
 type TextObjectProps = {
     textObject: SlideText,
@@ -9,11 +10,8 @@ type TextObjectProps = {
 }
 
 function TextObject({textObject, scale = 1, isSelected}: TextObjectProps) {
+    const {  changeTextContentReal } = useAppActions();
     const [isEditing, setIsEditing] = useState(false);
-    const [textValue, setTextValue] = useState(() => {
-        const storedText = localStorage.getItem(`text_${textObject.id}`);
-        return storedText ? storedText : textObject.value; 
-    });
 
     const textObjectStyles: CSSProperties = {
         position: 'absolute',
@@ -29,17 +27,18 @@ function TextObject({textObject, scale = 1, isSelected}: TextObjectProps) {
     }
 
     const handleDoubleClick = () => { setIsEditing(true); };
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => { setTextValue(e.target.value); };
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        changeTextContentReal(textObject.id, e.target.value);
+    };
     const handleBlur = () => { 
-        setIsEditing(false); 
-        localStorage.setItem(`text_${textObject.id}`, textValue);
+        setIsEditing(false);
     };
 
     return (
         <>
             {isEditing ? (
                 <input type="text"
-                    value={textValue}
+                    value={textObject.value}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     autoFocus
@@ -52,7 +51,7 @@ function TextObject({textObject, scale = 1, isSelected}: TextObjectProps) {
                     />
             ) : (
                 <p onDoubleClick={handleDoubleClick} style={textObjectStyles}>
-                    {textValue}
+                    {textObject.value}
                 </p>
                 )}
             </>
