@@ -1,5 +1,5 @@
 import styles from './ToolBar.module.css';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import addSlideIcon from '../../assets/zeleniyPlusik.png';
 import removeSlideIcon from '../../assets/krasniyKrestik.png';
 import addTextIcon from '../../assets/bukvaText.svg';
@@ -15,6 +15,7 @@ import { useAppActions } from '../../store/hooks/useAppActions';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { importPresentationFromFile } from '../../store/reduxStore/slideActionCreators';
+import { HistoryContext } from '../../store/hooks/historyContext';
 
 export function ToolBar() {
     const [backgroundColor, setBackgroundColor] = useState('#ffffff');
@@ -26,7 +27,43 @@ export function ToolBar() {
         removeElementFromSlide,
         changeSlideColor,
         changeSlideBgrImage,
+        setEditor,
     } = useAppActions();
+
+    const history = React.useContext(HistoryContext);
+    function onUndo() {
+        const newEditor = history.undo();
+        if (newEditor) {
+            setEditor(newEditor)
+        }
+    }
+    function onRedo() {
+        const newEditor = history.redo();
+        if (newEditor) {
+            setEditor(newEditor)
+        }
+    }
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.metaKey || event.ctrlKey) {
+                if (event.key === 'z' || event.key === 'Z' || event.key === 'Я' || event.key === 'я') {
+                    event.preventDefault();
+                    onUndo();
+                } else if (event.key === 'y' || event.key === 'Y' || event.key === 'Н' || event.key === 'н') {
+                    event.preventDefault();
+                    onRedo();
+                }
+            }
+            if (event.key === 'Backspace' || event.key === 'Delete') {
+                event.preventDefault();
+                removeElementFromSlide();
+            }
+        }
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        }
+    }, []);
 
     function onExportPresentation() {
         const editor = getEditor();
@@ -163,34 +200,34 @@ export function ToolBar() {
                 BGR
             </button>
 
-            <button className={styles.button} onClick={onExportPresentation}>
-                <img className={`${styles.imageButton} ${styles.fixMargin} ${styles.sourceFilter}`} src={downwardArrow} alt="Экспорт"/>
-                EXPORT
-            </button>
-
-            <div className={styles.importButton}> 
-                <button 
-                    className={styles.button} 
-                    onClick={() => document.getElementById('importFile')?.click()}>
-                    <img className={`${styles.imageButton} ${styles.fixMargin} ${styles.sourceFilter}`} src={upwardArrow} alt="Импорт"/>
-                    IMPORT
-                </button>
-                <input
-                    type="file"
-                    id="importFile"
-                    accept='.json'
-                    onChange={handleImportPresentation}
-                    className={styles.fileInput}
-                    style={{ display: 'none' }}
-                />
-            </div>
-
             <div className={`${styles.vorona}`}>
-                <button className={`${styles.button} ${styles.fixMargin}`}>
+                <button className={`${styles.button} ${styles.fixMargin}`} onClick={onExportPresentation}>
+                    <img className={`${styles.imageButton} ${styles.sourceFilter}`} src={downwardArrow} alt="Экспорт"/>
+                </button>
+
+                <div className={styles.importButton}> 
+                    <button 
+                        className={styles.button} 
+                        onClick={() => document.getElementById('importFile')?.click()}>
+                        <img className={`${styles.imageButton} ${styles.sourceFilter}`} src={upwardArrow} alt="Импорт"/>
+                    </button>
+                    <input
+                        type="file"
+                        id="importFile"
+                        accept='.json'
+                        onChange={handleImportPresentation}
+                        className={styles.fileInput}
+                        style={{ display: 'none' }}
+                    />
+                </div>
+
+                <div className={styles.prikol}></div>
+
+                <button className={`${styles.button} ${styles.fixMargin}`} onClick={onUndo}>
                     <img className={`${styles.sourceFilter}`} src={undoArrow} alt="Undo"/>
                 </button>
 
-                <button className={styles.button}>
+                <button className={styles.button} onClick={onRedo}>
                     <img className={`${styles.sourceFilter}`} src={redoArrow} alt="Redo"/>
                 </button>
             </div>

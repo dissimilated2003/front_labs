@@ -83,6 +83,12 @@
     margin-left: auto;
 }
 
+.prikol {
+    background-color: #94aec9;
+    width: 2px;
+    margin-right: 20px;
+}
+
 .fixMargin {
     margin-right: 10px;
 }
