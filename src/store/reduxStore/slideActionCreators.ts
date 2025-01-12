@@ -1,3 +1,4 @@
+import { Dispatch } from "redux";
 import { EditorType } from "../editorType";
 import { ActionType } from "./actions";
 
@@ -107,6 +108,39 @@ function loadPresentation(editor: EditorType) {
     }
 }
 
+function exportPresentation(editor: EditorType) {
+    return {
+        type: ActionType.EXPORT_PRESENTATION,
+        payload: editor
+    }
+}
+
+function importPresentation2(editor: EditorType) {
+    return {
+        type: ActionType.IMPORT_PRESENTATION,
+        payload: editor
+    }
+}
+
+export const importPresentation = async (file: File): Promise<EditorType> => {
+    const text = await file.text();
+    const importedEditor = JSON.parse(text) as EditorType;
+    return importedEditor;
+}
+export const importPresentationFromFile = (file: File) => {
+    return async (dispatch: Dispatch) => {
+        try {
+            const importedEditor = await importPresentation(file);
+            dispatch({
+                type: ActionType.IMPORT_PRESENTATION,
+                payload: importedEditor
+            });
+        } catch (err) {
+            console.error('Error: ', err);
+        }
+    }
+}
+
 export {
     addSlide, 
     removeSlide,
@@ -121,4 +155,6 @@ export {
     resizeSlideElement,
     savePresentation,
     loadPresentation,
+    exportPresentation,
+    importPresentation2,
 }

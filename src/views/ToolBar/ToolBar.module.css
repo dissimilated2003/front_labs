@@ -40,7 +40,7 @@
 .button img {
     width: 20px;
     height: 20px;
-    margin-right: 10px;
+    /*margin-right: 10px;*/
 }
 
 .button:hover {
@@ -76,4 +76,13 @@
 
 .sourceFilter {
     filter: invert(1);
+}
+
+.vorona {
+    display: flex;
+    margin-left: auto;
+}
+
+.fixMargin {
+    margin-right: 10px;
 }

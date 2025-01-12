@@ -15,7 +15,9 @@ export enum ActionType {
     MOVE_SLIDE_ELEMENT = 'moveSlideElement',
     RESIZE_SLIDE_ELEMENT = 'resizeSlideElement',
     SAVE_PRESENTATION = 'savePresentation',
-    LOAD_PRESENTATION = 'loadPresentation'
+    LOAD_PRESENTATION = 'loadPresentation',
+    EXPORT_PRESENTATION = 'exportPresentation',
+    IMPORT_PRESENTATION = 'importPresentation'
 }
 
 type AddSlideAction = {
@@ -112,7 +114,17 @@ type ResizeElementAction = {
       };
 }
 
+type ExportPresentationAction = {
+    type: ActionType.EXPORT_PRESENTATION
+}
+
+type ImportPresentationAction = {
+    type: ActionType.IMPORT_PRESENTATION,
+    payload: EditorType
+}
+
 export type EditorAction = AddSlideAction | RemoveSlideAction | SetSelectionAction | SetEditorAction
             | AddTextElementAction | AddImageAction | RemoveElementAction | ChangeSlideColorAction
             | ChangeSlideBgrImageAction | SavePresentationAction | LoadPresentationAction
             | MoveSlideAction | MoveElementAction | ResizeElementAction | ChangeTextContentAction
+            | ExportPresentationAction | ImportPresentationAction

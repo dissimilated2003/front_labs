@@ -15,6 +15,7 @@ import { saveToLocalStorage } from "../localStorage/localStorageUtils";
 import { loadFromLocalStorage } from "../localStorage/localStorageUtils";
 import { defEditor } from "../data";
 import { changeTextContent } from "../changeTextContent";
+import { exportPresentation } from "../localStorage/fileUtils";
 
 export function editorReducer(editor: EditorType = defEditor, action: EditorAction): EditorType {
     switch (action.type) {
@@ -63,6 +64,10 @@ export function editorReducer(editor: EditorType = defEditor, action: EditorActi
             return action.payload;
         case ActionType.LOAD_PRESENTATION:
             return loadFromLocalStorage() ?? editor;
+        case ActionType.EXPORT_PRESENTATION: 
+            return exportPresentation(editor) ?? editor;
+        case ActionType.IMPORT_PRESENTATION:
+            return action.payload;
         default:
             return editor;
     }

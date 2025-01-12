@@ -10,7 +10,7 @@ export function savePresentation(editor: EditorType): EditorType {
     return editor;
 }
 
-export function loadPresentation(): EditorType {
+export function loadPresentation(importedEditor: EditorType): EditorType {
     try {
         const loadedEditor = loadFromLocalStorage();
         if (loadedEditor) {

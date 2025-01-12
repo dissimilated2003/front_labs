@@ -19,7 +19,10 @@ export const importPresentation = (file: File): Promise<EditorType> => {
             try {
                 const content = e.target?.result as string;
                 const parsedContent = JSON.parse(content) as EditorType;
-
+                
+                if (validateEditor(parsedContent)) {
+                    console.log('zalup[a')
+                }
                 if (!validateEditor(parsedContent)) {
                     throw new Error('Invalid presentation format');
                 }

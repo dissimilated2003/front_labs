@@ -15,3 +15,35 @@
 .selectedSlide {
     outline: 3px solid #0b57d0;
 }
+
+.topLeft {
+    cursor: nwse-resize;
+}
+
+.topRight {
+    cursor: nesw-resize;
+}
+
+.bottomLeft {
+    cursor: nesw-resize;
+}
+
+.bottomRight {
+    cursor: nwse-resize;
+}
+
+.middleLeft {
+    cursor: ew-resize;
+}
+
+.middleRight {
+    cursor: ew-resize;
+}
+
+.middleTop {
+    cursor: ns-resize;
+}
+
+.middleBottom {
+    cursor: ns-resize;
+}

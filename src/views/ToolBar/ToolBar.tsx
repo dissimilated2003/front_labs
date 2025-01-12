@@ -1,6 +1,5 @@
 import styles from './ToolBar.module.css';
 import React, { useRef } from 'react';
-
 import addSlideIcon from '../../assets/zeleniyPlusik.png';
 import removeSlideIcon from '../../assets/krasniyKrestik.png';
 import addTextIcon from '../../assets/bukvaText.svg';
@@ -8,10 +7,14 @@ import removeElementIcon from '../../assets/musorka.svg';
 import addImageIcon from '../../assets/izobrazhenie.svg';
 import upwardArrow from '../../assets/upwardArrow.png';
 import downwardArrow from '../../assets/downwardArrow.png';
-import { exportPresentation, importPresentation } from '../../store/localStorage/fileUtils';
+import undoArrow from '../../assets/undoArrow.png';
+import redoArrow from '../../assets/redoArrow.png';
+import { exportPresentation } from '../../store/localStorage/fileUtils';
 import { getEditor } from '../../store/editor';
 import { useAppActions } from '../../store/hooks/useAppActions';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { importPresentationFromFile } from '../../store/reduxStore/slideActionCreators';
 
 export function ToolBar() {
     const [backgroundColor, setBackgroundColor] = useState('#ffffff');
@@ -30,14 +33,11 @@ export function ToolBar() {
         exportPresentation(editor);
     }
 
+    const dispatch = useDispatch();
     const handleImportPresentation = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            importPresentation(file)
-                .catch((err) => {
-                    console.error('Error importing presentation', err);
-                    alert('Error importing presentation. Please check file format');
-                });
+            dispatch(importPresentationFromFile(file));
         }
     }
 
@@ -77,24 +77,20 @@ export function ToolBar() {
         setFontSize(Number(e.target.value));
     };
 
-    function addNewTextElement() {
-        
-    }
-
     return (
         <div className={styles.toolbar}>
             <button className={styles.button} onClick={addSlide}>
-                <img className={styles.imageButton} src={addSlideIcon} alt="Добавить слайд" />
+                <img className={`${styles.imageButton} ${styles.fixMargin}`} src={addSlideIcon} alt="Добавить слайд" />
                 SLIDE
             </button>
 
             <button className={styles.button} onClick={removeSlide}>
-                <img className={styles.imageButton} src={removeSlideIcon} alt="Удалить слайд" />
+                <img className={`${styles.imageButton} ${styles.fixMargin}`} src={removeSlideIcon} alt="Удалить слайд" />
                 SLIDE
             </button>
 
             <button className={styles.button} onClick={changeTextContent}>
-                <img className={`${styles.imageButton} ${styles.sourceFilter}`} src={addTextIcon} alt="Добавить текст" />
+                <img className={`${styles.imageButton} ${styles.fixMargin} ${styles.sourceFilter}`} src={addTextIcon} alt="Добавить текст" />
                 ADD
                 <div>
                     <input
@@ -132,12 +128,12 @@ export function ToolBar() {
                     style={{ display: 'none' }}
                     ref={imageInputRef}
                 />
-                <img className={`${styles.imageButton} ${styles.sourceFilter}`} src={addImageIcon} alt="Добавить изображение"/>
+                <img className={`${styles.imageButton} ${styles.fixMargin} ${styles.sourceFilter}`} src={addImageIcon} alt="Добавить изображение"/>
                 <span onClick={() => imageInputRef.current?.click()}>ADD</span>
             </button>
 
             <button className={styles.button} onClick={removeElementFromSlide}>
-                <img className={`${styles.imageButton} ${styles.sourceFilter}`} src={removeElementIcon} alt="Удалить объект" />
+                <img className={`${styles.imageButton} ${styles.fixMargin} ${styles.sourceFilter}`} src={removeElementIcon} alt="Удалить объект" />
                 OBJ
             </button>
 
@@ -149,11 +145,11 @@ export function ToolBar() {
                         type="color"
                         value={backgroundColor}
                         onChange={(e) => onChangeBgrColor(e.target.value)}
-                    ></input>
+                    />
                 </button>
             </div>
 
-            <button className={styles.button} onClick={() => bgrImageInputRef.current?.click()}>
+            <button className={`${styles.button}`} onClick={() => bgrImageInputRef.current?.click()}>
                 <input
                     type="file"
                     id="imageUploader"
@@ -163,31 +159,40 @@ export function ToolBar() {
                     style={{ display: 'none' }}
                     ref={bgrImageInputRef}
                 />
-                <img className={`${styles.imageButton} ${styles.sourceFilter}`} src={addImageIcon} alt="Фоновое изображение"/>
+                <img className={`${styles.imageButton} ${styles.fixMargin} ${styles.sourceFilter}`} src={addImageIcon} alt="Фоновое изображение"/>
                 BGR
             </button>
 
             <button className={styles.button} onClick={onExportPresentation}>
-            <img className={`${styles.imageButton} ${styles.sourceFilter}`} src={downwardArrow} alt="Экспорт"/>
+                <img className={`${styles.imageButton} ${styles.fixMargin} ${styles.sourceFilter}`} src={downwardArrow} alt="Экспорт"/>
                 EXPORT
             </button>
 
             <div className={styles.importButton}> 
-                
-            <button 
-                className={styles.button} 
-                onClick={() => document.getElementById('importFile')?.click()}>
-                <img className={`${styles.imageButton} ${styles.sourceFilter}`} src={upwardArrow} alt="Импорт"/>
-                IMPORT
-            </button>
-
+                <button 
+                    className={styles.button} 
+                    onClick={() => document.getElementById('importFile')?.click()}>
+                    <img className={`${styles.imageButton} ${styles.fixMargin} ${styles.sourceFilter}`} src={upwardArrow} alt="Импорт"/>
+                    IMPORT
+                </button>
                 <input
                     type="file"
                     id="importFile"
                     accept='.json'
                     onChange={handleImportPresentation}
                     className={styles.fileInput}
-                    style={{ display: 'none' }}/>
+                    style={{ display: 'none' }}
+                />
+            </div>
+
+            <div className={`${styles.vorona}`}>
+                <button className={`${styles.button} ${styles.fixMargin}`}>
+                    <img className={`${styles.sourceFilter}`} src={undoArrow} alt="Undo"/>
+                </button>
+
+                <button className={styles.button}>
+                    <img className={`${styles.sourceFilter}`} src={redoArrow} alt="Redo"/>
+                </button>
             </div>
         </div>
     )
