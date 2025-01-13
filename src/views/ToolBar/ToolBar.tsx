@@ -31,6 +31,7 @@ export function ToolBar() {
         changeSlideColor,
         changeSlideBgrImage,
         setEditor,
+        commitPresentation,
     } = useAppActions();
 
     const editor = useAppSelector((state) => state);
@@ -117,6 +118,7 @@ export function ToolBar() {
     const onChangeBgrColor = (color: string) => {
         changeSlideColor({ type: 'solid', color});
         setBackgroundColor(color);
+        commitPresentation();
     }
 
     const imageInputRef = useRef<HTMLInputElement | null>(null); 
@@ -131,6 +133,7 @@ export function ToolBar() {
             };
             reader.readAsDataURL(file);
         }
+        commitPresentation();
     }
 
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -143,26 +146,37 @@ export function ToolBar() {
             }
             reader.readAsDataURL(file);
         }
+        commitPresentation();
     }
 
     const [fontSize, setFontSize] = useState(20);
     const handleFontSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFontSize(Number(e.target.value));
+        commitPresentation();
     };
 
     return (
         <div className={styles.toolbar}>
-            <button className={styles.button} onClick={addSlide}>
+            <button className={styles.button} onClick={() => {
+                addSlide();
+                commitPresentation();
+            }}>
                 <img className={`${styles.imageButton} ${styles.fixMargin}`} src={addSlideIcon} alt="Добавить слайд" />
                 SLIDE
             </button>
 
-            <button className={styles.button} onClick={removeSlide}>
+            <button className={styles.button} onClick={() => {
+                removeSlide();
+                commitPresentation();
+            }}>
                 <img className={`${styles.imageButton} ${styles.fixMargin}`} src={removeSlideIcon} alt="Удалить слайд" />
                 SLIDE
             </button>
 
-            <button className={styles.button} onClick={changeTextContent}>
+            <button className={styles.button} onClick={() => {
+                changeTextContent();
+                commitPresentation();
+            }}>
                 <img className={`${styles.imageButton} ${styles.fixMargin} ${styles.sourceFilter}`} src={addTextIcon} alt="Добавить текст" />
                 ADD
                 <div>

@@ -10,7 +10,7 @@ export function useDragAndDrop({slideId}: UseDragAndDropProps) {
     const [isDragging, setIsDragging] = useState(false);
     const [draggedElemId, setDraggedElemId] = useState<string | null>(null);
     const dragStartPos = useRef({x: 0, y: 0});
-    const { moveSlideElement } = useAppActions();
+    const { moveSlideElement, commitPresentation } = useAppActions();
     const editor = useAppSelector((state) => state)
     const elementRef = useRef<{ x: number, y: number } | null>(null);
 
@@ -50,6 +50,7 @@ export function useDragAndDrop({slideId}: UseDragAndDropProps) {
         setIsDragging(false);
         setDraggedElemId(null);
         elementRef.current = null;
+        commitPresentation();
     }
 
     function handleMouseLeave() {

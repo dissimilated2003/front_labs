@@ -10,7 +10,7 @@ type TextObjectProps = {
 }
 
 function TextObject({textObject, scale = 1, isSelected}: TextObjectProps) {
-    const {  changeTextContentReal } = useAppActions();
+    const {  changeTextContentReal, commitPresentation } = useAppActions();
     const [isEditing, setIsEditing] = useState(false);
 
     const textObjectStyles: CSSProperties = {
@@ -32,6 +32,7 @@ function TextObject({textObject, scale = 1, isSelected}: TextObjectProps) {
     };
     const handleBlur = () => { 
         setIsEditing(false);
+        commitPresentation();
     };
 
     return (

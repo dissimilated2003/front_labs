@@ -68,6 +68,11 @@ export function editorReducer(editor: EditorType = defEditor, action: EditorActi
             return exportPresentation(editor) ?? editor;
         case ActionType.IMPORT_PRESENTATION:
             return action.payload;
+        case ActionType.COMMIT_PRESENTATION:
+            return {
+                ...editor,
+                savedPresentation: editor.presentation,
+            };
         default:
             return editor;
     }

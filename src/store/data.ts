@@ -63,6 +63,7 @@ const presentation: Presentation = {
 
 const defEditor: EditorType = {
     presentation,
+    savedPresentation: presentation,
     selection: {
         selectedSlideId: presentation.slides[0].id,
         selectedObjectId: null,

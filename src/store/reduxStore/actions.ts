@@ -17,7 +17,8 @@ export enum ActionType {
     SAVE_PRESENTATION = 'savePresentation',
     LOAD_PRESENTATION = 'loadPresentation',
     EXPORT_PRESENTATION = 'exportPresentation',
-    IMPORT_PRESENTATION = 'importPresentation'
+    IMPORT_PRESENTATION = 'importPresentation',
+    COMMIT_PRESENTATION = 'commitPresentation'
 }
 
 type AddSlideAction = {
@@ -123,8 +124,12 @@ type ImportPresentationAction = {
     payload: EditorType
 }
 
+type CommitPresentationAction = {
+    type: ActionType.COMMIT_PRESENTATION,
+}
+
 export type EditorAction = AddSlideAction | RemoveSlideAction | SetSelectionAction | SetEditorAction
             | AddTextElementAction | AddImageAction | RemoveElementAction | ChangeSlideColorAction
             | ChangeSlideBgrImageAction | SavePresentationAction | LoadPresentationAction
             | MoveSlideAction | MoveElementAction | ResizeElementAction | ChangeTextContentAction
-            | ExportPresentationAction | ImportPresentationAction
+            | ExportPresentationAction | ImportPresentationAction | CommitPresentationAction

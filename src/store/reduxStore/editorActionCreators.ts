@@ -7,3 +7,9 @@ export function setEditor(newEditor: EditorType) {
         payload: newEditor,
     }
 }
+
+export function commitPresentation() {
+    return {
+        type: ActionType.COMMIT_PRESENTATION,
+    }
+}

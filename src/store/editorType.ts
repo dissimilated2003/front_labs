@@ -7,5 +7,6 @@ export type SelectionType = {
 
 export type EditorType = {
     presentation: Presentation,
+    savedPresentation: Presentation,
     selection?: SelectionType,
 }
