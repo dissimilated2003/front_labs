@@ -9,6 +9,7 @@ import upwardArrow from '../../assets/upwardArrow.png';
 import downwardArrow from '../../assets/downwardArrow.png';
 import undoArrow from '../../assets/undoArrow.png';
 import redoArrow from '../../assets/redoArrow.png';
+import fileIcon from '../../assets/fileIcon.png';
 import { exportPresentation } from '../../store/localStorage/fileUtils';
 import { getEditor } from '../../store/editor';
 import { useAppActions } from '../../store/hooks/useAppActions';
@@ -16,6 +17,8 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { importPresentationFromFile } from '../../store/reduxStore/slideActionCreators';
 import { HistoryContext } from '../../store/hooks/historyContext';
+import { generatePDF } from '../../store/utilities/generatePdf';
+import { useAppSelector } from '../../store/hooks/useAppSelector';
 
 export function ToolBar() {
     const [backgroundColor, setBackgroundColor] = useState('#ffffff');
@@ -30,6 +33,37 @@ export function ToolBar() {
         setEditor,
     } = useAppActions();
 
+    const editor = useAppSelector((state) => state);
+    const slides = editor.presentation.slides;
+    const presentationTitle = editor.presentation.title;
+    const [pdfURL, setPdfURL] = useState<string | null>(null);
+    const [isModalOpen, setModalOpen] = useState(false);
+    const handleGeneratePDF = async () => {
+        try {
+            const pdfBlob = await generatePDF(slides);
+            const pdfURL = URL.createObjectURL(pdfBlob);
+            setPdfURL(pdfURL);
+            setModalOpen(true);
+        } catch (err) {
+            console.error('Error generate PDF: ', err);
+            alert("Error generate PDF!")
+        }
+    };
+
+    const handleDownloadPDF = () => {
+        if (pdfURL) {
+            const link = document.createElement("a");
+            link.href = pdfURL;
+            link.download = presentationTitle + ".pdf";
+            link.click();
+        }
+    }
+
+    const handleClosePreview = () => {
+        setModalOpen(false);
+        setPdfURL(null);
+    }
+
     const history = React.useContext(HistoryContext);
     function onUndo() {
         const newEditor = history.undo();
@@ -37,12 +71,14 @@ export function ToolBar() {
             setEditor(newEditor)
         }
     }
+
     function onRedo() {
         const newEditor = history.redo();
         if (newEditor) {
             setEditor(newEditor)
         }
     }
+
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.metaKey || event.ctrlKey) {
@@ -54,7 +90,7 @@ export function ToolBar() {
                     onRedo();
                 }
             }
-            if (event.key === 'Backspace' || event.key === 'Delete') {
+            if (event.key === 'Delete') {
                 event.preventDefault();
                 removeElementFromSlide();
             }
@@ -201,6 +237,13 @@ export function ToolBar() {
             </button>
 
             <div className={`${styles.vorona}`}>
+                <button className={styles.button} onClick={handleGeneratePDF}>
+                    <img className={`${styles.sourceFilter} ${styles.fixMargin}`} src={fileIcon}/>
+                    PDF
+                </button>
+
+                <div className={styles.prikol}></div>
+
                 <button className={`${styles.button} ${styles.fixMargin}`} onClick={onExportPresentation}>
                     <img className={`${styles.imageButton} ${styles.sourceFilter}`} src={downwardArrow} alt="Экспорт"/>
                 </button>
@@ -230,6 +273,31 @@ export function ToolBar() {
                 <button className={styles.button} onClick={onRedo}>
                     <img className={`${styles.sourceFilter}`} src={redoArrow} alt="Redo"/>
                 </button>
+
+                {isModalOpen && (
+                <div className={styles.modal}>
+                    <div className={styles.modalContent}>
+                        {pdfURL && (
+                            <>
+                                <iframe
+                                    src={pdfURL}
+                                    title="PDF Preview"
+                                    className={styles.iframePreview}
+                                    style={{width: '100%', height: '80vh'}}
+                                ></iframe>
+                                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                                    <button className={`${styles.button} ${styles.setMT} ${styles.setML}`} onClick={handleDownloadPDF}>
+                                        DOWNLOAD PDF
+                                    </button>
+                                    <button className={`${styles.button} ${styles.setMT}`} onClick={handleClosePreview}>
+                                        RETURN
+                                    </button>
+                                </div>
+                            </>
+                        )}
+                    </div>
+                </div>
+            )}
             </div>
         </div>
     )
