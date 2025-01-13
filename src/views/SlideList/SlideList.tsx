@@ -1,9 +1,9 @@
-import { SlideO } from "./Slide/Slide";
+import { SlideO } from '../Slide/Slide';
 import styles from './SlideList.module.css'
-import { useAppActions } from "../store/hooks/useAppActions";
-import { useSlideTransition } from "../store/hooks/useSlideTransition";
-import { useAppSelector } from "../store/hooks/useAppSelector";
-import '../views/Slide/Slide.module.css'
+import { useAppActions } from "../../store/hooks/useAppActions";
+import { useSlideTransition } from "../../store/hooks/useSlideTransition";
+import { useAppSelector } from "../../store/hooks/useAppSelector";
+import '../Slide/Slide.module.css'
 
 const Slide_Preview_Scale = 0.2
 

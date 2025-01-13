@@ -1,0 +1,57 @@
+.vorona {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.previewPanel {
+    background-color: #3d4880;
+    width: auto;
+    height: 54px;
+    margin-bottom: 13px;
+}
+
+.slidePreview {
+    position: relative;
+    border: 1px solid #94aec9;
+    pointer-events: none;
+}
+
+.button {
+    display: flex;
+    width: 70px;
+    height: 50px;
+    text-align: center;
+    align-items: center;
+    background-color: #006b7e;
+    color: #d3d3d3;
+    border: 2px solid rgb(2, 68, 71);
+    border-radius: 4px;
+    padding-left: 12px;
+    margin-right: 20px;
+    margin-left: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: 'Arial';
+    font-weight: 600;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.transitionButton {
+    margin: auto;
+}
+
+.closeButton {
+    position: absolute;
+    z-index: 111;
+    width: 83px;
+    height: 37px;
+    margin-left: 50px;
+    margin-top: 7px;
+}
+
+.button:hover {
+    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.5);
+    background-color: #004e5c;
+    color: #e2bb0a;
+}

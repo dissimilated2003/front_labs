@@ -20,7 +20,11 @@ import { HistoryContext } from '../../store/hooks/historyContext';
 import { generatePDF } from '../../store/utilities/generatePdf';
 import { useAppSelector } from '../../store/hooks/useAppSelector';
 
-export function ToolBar() {
+type ToolBarProps = {
+    navigate: (path: string) => void;
+}
+
+export function ToolBar({navigate}: ToolBarProps) {
     const [backgroundColor, setBackgroundColor] = useState('#ffffff');
     const {
         addSlide,
@@ -249,8 +253,17 @@ export function ToolBar() {
                 <img className={`${styles.imageButton} ${styles.fixMargin} ${styles.sourceFilter}`} src={addImageIcon} alt="Фоновое изображение"/>
                 BGR
             </button>
-
+            
             <div className={`${styles.vorona}`}>
+                <button
+                    className={`${styles.button}`}
+                    onClick={() => navigate("/player")}
+                >
+                    PREVIEW
+                </button>
+
+                <div className={styles.prikol}></div>
+
                 <button className={styles.button} onClick={handleGeneratePDF}>
                     <img className={`${styles.sourceFilter} ${styles.fixMargin}`} src={fileIcon}/>
                     PDF

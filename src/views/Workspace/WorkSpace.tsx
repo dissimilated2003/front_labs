@@ -1,6 +1,6 @@
-import { useAppSelector } from "../store/hooks/useAppSelector";
-import { Slide } from "../store/PresentationTypes";
-import { SlideO } from "./Slide/Slide";
+import { useAppSelector } from "../../store/hooks/useAppSelector";
+import { Slide } from "../../store/PresentationTypes";
+import { SlideO } from "../Slide/Slide";
 import styles from './WorkSpace.module.css'
 
 export function Workspace() {
@@ -11,7 +11,7 @@ export function Workspace() {
 
     return (
         <div className={styles.workspace}>
-            <SlideO slide={selectedSlide} className={styles.workspace}></SlideO>
+            <SlideO slide={selectedSlide} className={styles.workspace} scale={1.0}></SlideO>
         </div>
     )
 }
