@@ -24,7 +24,6 @@ export const generatePDF = async (slides: Slide[]): Promise<Blob> => {
             pdf.rect(0, 0, 935, 525, "F");
         }
 
-
         slide.elements.forEach((element) => {
             if (element.type === "SlideText") {
                 addTextToPDF(pdf, element);

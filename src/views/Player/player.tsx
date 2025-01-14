@@ -14,7 +14,7 @@ export function Player() {
     const handleKeyDown = (event: KeyboardEvent) => {
         switch (event.key) {
             case "ArrowLeft":
-                prevSlide();
+                if (slide !== 0) { prevSlide(); }
                 break;
             case "ArrowRight":
                 nextSlide();
